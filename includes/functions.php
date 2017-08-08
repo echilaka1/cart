@@ -24,7 +24,14 @@ function display(){
                             } else {
                                 $value = $display[$c]; #assigns $value to $display if $display have elements in the file, in this case $display is not empty, so it is true
                             }
-                              echo "<td>" .$value. '</td>';
+                             echo "<td>";
+                              if ($c == 5) {
+                                echo '<img src="' . $value . '">';
+                              } else {
+                                echo $value;
+                              }
+                                
+                               echo '</td>';
                             }
                             echo "</tr>";
                             

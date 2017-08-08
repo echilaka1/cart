@@ -14,7 +14,7 @@
         $amount = $_POST['amount'];
         $quantity = $_POST['quantity'];
         $total = $_POST['total'];
-        // $image = $_FILES['image'];
+        // $image = $_FILES['file'];
         // $new_image = implode($image, '=>');
   
         #initialize form input to empty so if no data is inputed, it will display an error message
@@ -42,14 +42,28 @@
 
         $user_id = $counter;
 
-        // $ImageName = $_FILES['image']['name'];
-        // $fileElementName = 'image';
-        $filerepo = '/var/www/html/cart/uploads/'; 
-        $location = $filerepo . $_FILES['image']['name']; 
-        move_uploaded_file($_FILES['image']['tmp_name'], $location); 
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed  = array('jpg','jpeg','gif','png','pdf');
+        if(in_array($fileActualExt, $allowed)){
+          if($fileError == 0){
+            if($fileSize < 1000000){
+              $fileNameNew = uniqid('', true). ".". $fileActualExt;
+              $fileDestination = './uploads/'.$fileNameNew;
+              move_uploaded_file($fileTmpName, $fileDestination);
+            }
+          }
+        }
 
         $file_handle = fopen($file, APPEND_MODE);
-        $data = [$user_id, $item, $amount, $quantity, $total, $location];
+        $data = [$user_id, $item, $amount, $quantity, $total, $fileDestination];
         fputcsv($file_handle, $data);
         fclose ($file_handle);
 
@@ -66,7 +80,7 @@
             <p><?php echo $error_message; ?></p>
              <div class="row">
              <div class="col-md-7">
-              <h2> Mini Shopping Cart</h2>
+              <h2 class="logo"> Mini Shopping Cart</h2>
                 <p class="text-danger">* Required fields</p>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
                   <div class="form-group">
@@ -93,8 +107,8 @@
                     <div class="form-group">
                     <label for="file-upload" class="col-sm-2 control-label"> Upload Image </label>
                     <small class="text-danger">* </small>
-                    <input type="hidden" name="MAX_FILE_SIZE" value="1000">
-                    <input type="file" name="image" accept="image/*" id="image">
+                   <!--  <input type="hidden" name="MAX_FILE_SIZE" value="1000"> -->
+                    <input type="file" name="file" accept="image/*" id="image">
                     </div>
                     <!-- <div class="text-center text-giant total"></div> -->
                     <div class="col-sm-12">
@@ -105,7 +119,7 @@
                
               </div>
               <div class="col-md-5">
-                 <h2> Menu List</h2>
+                 <h2 class="logo"> Menu List</h2>
                 <?php 
                      display();
                      echo("<p>Total :           ");

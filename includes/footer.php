@@ -4,7 +4,8 @@
             <hr>
             <small>Coded by <a href="http://github.com/echilaka1/" target="_blank">Ikay</a> in OlotuSquare</small>
         </footer>
-
+      <script src="greensock-js/src/minified/TweenMax.min.js"></script>
+      <script src="main.js"></script>
       <script>
       // grab everything we need
       const amountInput    = document.querySelector('[name=amount]');

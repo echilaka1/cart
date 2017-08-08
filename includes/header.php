@@ -21,6 +21,7 @@
     <style>
     /*body { background-color: #77216fff; }*/
       .text-giant      { font-size: 20px; }
+      img {width:25px; height:25px;}
     
     </style>
     </head>
